@@ -145,22 +145,27 @@ function newQuestion(){
 }
 
 function checkAnswer(){
-    let v=Number(document.getElementById("answer").value);
-    let r=document.getElementById("result");
+    let v = Number(document.getElementById("answer").value);
+    let r = document.getElementById("result");
 
-    if(v===current.ans){
+    if(v === current.ans){
         if(!revealed){
-            score+=10;
-            document.getElementById("score").innerText=score;
-            r.innerHTML="✅ ถูกต้อง! +10 คะแนน";
+            score += 10;
+            document.getElementById("score").innerText = score;
+            r.innerHTML = "✅ ถูกต้อง! +10 คะแนน";
         }else{
-            r.innerHTML="✅ ถูก แต่ไม่เพิ่มคะแนน (ดูเฉลยแล้ว)";
+            r.innerHTML = "✅ ถูก แต่ไม่เพิ่มคะแนน (ดูเฉลยแล้ว)";
         }
-        r.className="result correct";
+        r.className = "result correct";
     }else{
-        r.innerHTML="❌ ยังไม่ถูก";
-        r.className="result wrong";
+        r.innerHTML = "❌ ยังไม่ถูก";
+        r.className = "result wrong";
     }
+
+    // ⭐ เพิ่ม: ไปข้อถัดไปอัตโนมัติ
+    setTimeout(() => {
+        newQuestion();
+    }, 1200); // หน่วง 1.2 วินาที
 }
 
 function toggleExplain(){
@@ -170,7 +175,5 @@ function toggleExplain(){
 
 newQuestion();
 </script>
-
 </body>
 </html>
-
