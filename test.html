@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Sequence Trainer TGAT2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI',Tahoma,sans-serif;
+    background:linear-gradient(135deg,#1e3c72,#2a5298);
+}
+.app{max-width:900px;margin:auto;padding:20px}
+h1{text-align:center;color:#fff}
+.card{
+    background:#fff;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+}
+.sequence{
+    font-size:26px;
+    text-align:center;
+    margin:20px 0;
+}
+.sequence span{
+    padding:6px 10px;
+    background:#f0f4f8;
+    border-radius:8px;
+    margin:0 3px;
+    display:inline-block;
+}
+.sequence .q{background:#ffeaa7;font-weight:bold}
+input{
+    font-size:18px;
+    padding:10px;
+    width:200px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    text-align:center;
+}
+button{
+    margin:10px 6px;
+    padding:10px 18px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    background:linear-gradient(135deg,#6a11cb,#2575fc);
+    color:#fff;
+}
+.result{font-size:18px;text-align:center}
+.correct{color:#2ecc71}
+.wrong{color:#e74c3c}
+.explain{
+    display:none;
+    margin-top:15px;
+    background:#f7f9fb;
+    padding:15px;
+    border-radius:12px;
+}
+.footer{text-align:center;color:#fff;margin-top:20px}
+</style>
+</head>
+<body>
+
+<div class="app">
+<h1>🎯 เกมฝึกอนุกรมตัวเลข (TGAT2)</h1>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between">
+<div>⏱ เวลา: <span id="time">0</span> วินาที</div>
+<div>⭐ คะแนน: <span id="score">0</span></div>
+</div>
+
+<div id="sequence" class="sequence"></div>
+
+<div style="text-align:center">
+<input type="number" id="answer" placeholder="คำตอบของคุณ"><br>
+<button onclick="checkAnswer()">ตรวจคำตอบ</button>
+<button onclick="newQuestion()">สุ่มโจทย์ใหม่</button>
+<button onclick="toggleExplain()">ดูเฉลย</button>
+</div>
+
+<div id="result" class="result"></div>
+<div id="explain" class="explain"></div>
+</div>
+
+<div class="footer">ฝึกวิเคราะห์ตรรกะ เพื่อสอบ TGAT2</div>
+</div>
+
+<script>
+let current=null;
+let score=0;
+let time=0;
+let timer=null;
+let used=new Set();
+let revealed=false;
+
+function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+
+function genArithmetic(){
+    let a=rand(1,20),d=rand(2,10),s=[];
+    for(let i=0;i<6;i++) s.push(a+i*d);
+    return{seq:s,ans:s[5],exp:`เพิ่มทีละ ${d}`};
+}
+
+function genGeometric(){
+    let a=rand(1,5),r=rand(2,4),s=[a];
+    for(let i=1;i<6;i++) s.push(s[i-1]*r);
+    return{seq:s,ans:s[5],exp:`คูณด้วย ${r}`};
+}
+
+function genAlt(){
+    let a=rand(1,10),d1=rand(2,5),d2=rand(6,10),s=[a];
+    for(let i=1;i<6;i++) s.push(s[i-1]+(i%2?d1:d2));
+    return{seq:s,ans:s[5],exp:`+${d1} , +${d2} สลับกัน`};
+}
+
+function newQuestion(){
+    revealed=false;
+
+    if(!timer){
+        timer=setInterval(()=>{
+            time++;
+            document.getElementById("time").innerText=time;
+        },1000);
+    }
+
+    document.getElementById("result").innerHTML="";
+    document.getElementById("answer").value="";
+    document.getElementById("explain").style.display="none";
+
+    let gens=[genArithmetic,genGeometric,genAlt];
+    let q;
+    do{q=gens[rand(0,gens.length-1)]();}while(used.has(q.seq.join(",")));
+    used.add(q.seq.join(","));
+    current=q;
+
+    let html="";
+    for(let i=0;i<q.seq.length;i++){
+        html+= i===5 ? `<span class="q">?</span>` : `<span>${q.seq[i]}</span>`;
+    }
+    document.getElementById("sequence").innerHTML=html;
+    document.getElementById("explain").innerHTML=`<b>เฉลย:</b> ${q.ans}<br>${q.exp}`;
+}
+
+function checkAnswer(){
+    let v=Number(document.getElementById("answer").value);
+    let r=document.getElementById("result");
+
+    if(v===current.ans){
+        if(!revealed){
+            score+=10;
+            document.getElementById("score").innerText=score;
+            r.innerHTML="✅ ถูกต้อง! +10 คะแนน";
+        }else{
+            r.innerHTML="✅ ถูก แต่ไม่เพิ่มคะแนน (ดูเฉลยแล้ว)";
+        }
+        r.className="result correct";
+    }else{
+        r.innerHTML="❌ ยังไม่ถูก";
+        r.className="result wrong";
+    }
+}
+
+function toggleExplain(){
+    document.getElementById("explain").style.display="block";
+    revealed=true;
+}
+
+newQuestion();
+</script>
+
+</body>
+</html>
