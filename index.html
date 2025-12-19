@@ -5,491 +5,171 @@
 <title>Sequence Trainer TGAT2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <style>
-    body {
-        margin: 0;
-        font-family: 'Segoe UI', Tahoma, sans-serif;
-        background: linear-gradient(135deg,#1e3c72,#2a5298);
-        color: #333;
-    }
-    .app {
-        max-width: 900px;
-        margin: auto;
-        padding: 20px;
-    }
-    h1 {
-        text-align: center;
-        color: #fff;
-        margin-bottom: 10px;
-    }
-    .card {
-        background: #fff;
-        border-radius: 18px;
-        padding: 20px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-        margin-top: 20px;
-    }
-    .sequence {
-        font-size: 26px;
-        text-align: center;
-        margin: 20px 0;
-        letter-spacing: 2px;
-    }
-    .sequence span {
-        padding: 6px 10px;
-        border-radius: 8px;
-        background: #f0f4f8;
-        margin: 0 3px;
-        display: inline-block;
-    }
-    .sequence .q {
-        background: #ffeaa7;
-        font-weight: bold;
-    }
-    .input-box {
-        text-align: center;
-        margin-top: 15px;
-    }
-    input {
-        font-size: 18px;
-        padding: 10px 14px;
-        width: 200px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        text-align: center;
-    }
-    button {
-        font-size: 16px;
-        padding: 10px 18px;
-        margin: 10px 6px 0 6px;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        background: linear-gradient(135deg,#6a11cb,#2575fc);
-        color: #fff;
-        transition: transform .15s, box-shadow .15s;
-    }
-    button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(0,0,0,.25);
-    }
-    .result {
-        margin-top: 15px;
-        text-align: center;
-        font-size: 18px;
-    }
-    .correct { color: #2ecc71; }
-    .wrong { color: #e74c3c; }
-    .explain {
-        margin-top: 15px;
-        background: #f7f9fb;
-        padding: 15px;
-        border-radius: 12px;
-        font-size: 15px;
-        display: none;
-    }
-    .footer {
-        margin-top: 25px;
-        text-align: center;
-        color: #fff;
-        font-size: 14px;
-        opacity: .85;
-    }
+body{
+    margin:0;
+    font-family:'Segoe UI',Tahoma,sans-serif;
+    background:linear-gradient(135deg,#1e3c72,#2a5298);
+}
+.app{max-width:900px;margin:auto;padding:20px}
+h1{text-align:center;color:#fff}
+.card{
+    background:#fff;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+}
+.sequence{
+    font-size:26px;
+    text-align:center;
+    margin:20px 0;
+}
+.sequence span{
+    padding:6px 10px;
+    background:#f0f4f8;
+    border-radius:8px;
+    margin:0 3px;
+    display:inline-block;
+}
+.sequence .q{background:#ffeaa7;font-weight:bold}
+input{
+    font-size:18px;
+    padding:10px;
+    width:200px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    text-align:center;
+}
+button{
+    margin:10px 6px;
+    padding:10px 18px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    background:linear-gradient(135deg,#6a11cb,#2575fc);
+    color:#fff;
+}
+.result{font-size:18px;text-align:center}
+.correct{color:#2ecc71}
+.wrong{color:#e74c3c}
+.explain{
+    display:none;
+    margin-top:15px;
+    background:#f7f9fb;
+    padding:15px;
+    border-radius:12px;
+}
+.footer{text-align:center;color:#fff;margin-top:20px}
 </style>
 </head>
 <body>
+
 <div class="app">
-    <h1>🎯 เกมฝึกอนุกรมตัวเลข (TGAT2)</h1>
+<h1>🎯 เกมฝึกอนุกรมตัวเลข (TGAT2)</h1>
 
-    <div class="card">
-        <div id="status" style="display:flex;justify-content:space-between;align-items:center;font-size:16px;margin-bottom:10px;">
-            <div>⏱ เวลา: <span id="time">0</span> วินาที</div>
-            <div>⭐ คะแนน: <span id="score">0</span></div>
-        </div>
-        <div id="sequence" class="sequence"></div>
+<div class="card">
+<div style="display:flex;justify-content:space-between">
+<div>⏱ เวลา: <span id="time">0</span> วินาที</div>
+<div>⭐ คะแนน: <span id="score">0</span></div>
+</div>
 
-        <div class="input-box">
-            <input type="number" id="answer" placeholder="คำตอบของคุณ">
-            <br>
-            <button onclick="checkAnswer()">ตรวจคำตอบ</button>
-            <button onclick="newQuestion()">สุ่มโจทย์ใหม่</button>
-            <button onclick="toggleExplain()">ดูเฉลย</button>
-        </div>
+<div id="sequence" class="sequence"></div>
 
-        <div id="result" class="result"></div>
-        <div id="explain" class="explain"></div>
-    </div>
+<div style="text-align:center">
+<input type="number" id="answer" placeholder="คำตอบของคุณ"><br>
+<button onclick="checkAnswer()">ตรวจคำตอบ</button>
+<button onclick="newQuestion()">สุ่มโจทย์ใหม่</button>
+<button onclick="toggleExplain()">ดูเฉลย</button>
+</div>
 
-    <div class="footer">ฝึกปริมาณ + วิเคราะห์ตรรกะ เพื่อสอบ TGAT2</div>
+<div id="result" class="result"></div>
+<div id="explain" class="explain"></div>
+</div>
+
+<div class="footer">ฝึกวิเคราะห์ตรรกะ เพื่อสอบ TGAT2</div>
 </div>
 
 <script>
-let current = null;
-let score = 0;
-let time = 0;
-let timer = null;
-let used = new Set();
+let current=null;
+let score=0;
+let time=0;
+let timer=null;
+let used=new Set();
+let revealed=false;
 
-function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 
 function genArithmetic(){
-    let a = rand(1,20);
-    let d = rand(2,10);
-    let seq = [];
-    for(let i=0;i<6;i++) seq.push(a+i*d);
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
+    let a=rand(1,20),d=rand(2,10),s=[];
+    for(let i=0;i<6;i++) s.push(a+i*d);
+    return{seq:s,ans:s[5],exp:`เพิ่มทีละ ${d}`};
 }
 
 function genGeometric(){
-    let a = rand(1,5);
-    let r = rand(2,4);
-    let seq=[a];
-    for(let i=1;i<6;i++) seq.push(seq[i-1]*r);
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
+    let a=rand(1,5),r=rand(2,4),s=[a];
+    for(let i=1;i<6;i++) s.push(s[i-1]*r);
+    return{seq:s,ans:s[5],exp:`คูณด้วย ${r}`};
 }
 
-function genAlternate(){
-    let a = rand(1,10);
-    let d1 = rand(2,5);
-    let d2 = rand(6,10);
-    let seq=[a];
-    for(let i=1;i<6;i++){
-        seq.push(seq[i-1] + (i%2?d1:d2));
-    }
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
+function genAlt(){
+    let a=rand(1,10),d1=rand(2,5),d2=rand(6,10),s=[a];
+    for(let i=1;i<6;i++) s.push(s[i-1]+(i%2?d1:d2));
+    return{seq:s,ans:s[5],exp:`+${d1} , +${d2} สลับกัน`};
 }
-
-function genSquare(){
-    let start = rand(1,5);
-    let seq=[];
-    for(let i=0;i<6;i++) seq.push((start+i)**2);
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
-}
-
-// คูณแล้วบวก (×a + b)
-function genMulAdd(){
-    let a = rand(1,5);
-    let mul = rand(2,4);
-    let add = rand(1,10);
-    let seq=[a];
-    for(let i=1;i<6;i++) seq.push(seq[i-1]*mul + add);
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
-}
-
-// สลับคูณ / บวก
-function genAltMulAdd(){
-    let a = rand(1,5);
-    let mul = rand(2,4);
-    let add = rand(3,10);
-    let seq=[a];
-    for(let i=1;i<6;i++){
-        seq.push(i%2 ? seq[i-1]*mul : seq[i-1]+add);
-    }
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
-}
-
-// ผลต่างเพิ่มขึ้นเรื่อย ๆ
-function genGrowingDiff(){
-    let a = rand(1,10);
-    let diff = rand(1,4);
-    let seq=[a];
-    for(let i=1;i<6;i++){
-        seq.push(seq[i-1] + diff);
-        diff++;
-    }
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
-}
-
-// แยกพจน์คี่-คู่
-function genOddEven(){
-    let odd = rand(1,5);
-    let even = rand(10,20);
-    let seq=[];
-    for(let i=0;i<6;i++){
-        seq.push(i%2===0 ? odd+=2 : even+=3);
-    }
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
-}
-
-// ผลต่างของผลต่าง (second difference)
-function genSecondDiff(){
-    let a = rand(1,10);
-    let d1 = rand(1,4);
-    let d2 = rand(1,3);
-    let seq=[a];
-    let diff = d1;
-    for(let i=1;i<6;i++){
-        seq.push(seq[i-1] + diff);
-        diff += d2;
-    }
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
-}
-
-// สลับสูตร 2 ชั้น
-function genTwoRule(){
-    let a = rand(1,5);
-    let seq=[a];
-    for(let i=1;i<6;i++){
-        if(i%2===1) seq.push(seq[i-1]*2 + 1);
-        else seq.push(seq[i-1] + 5);
-    }
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
-}
-
-// เล่นกับหลักหน่วย
-function genUnitDigit(){
-    let a = rand(10,50);
-    let seq=[a];
-    for(let i=1;i<6;i++){
-        let inc = (i%2===0)?7:13;
-        let next = seq[i-1] + inc;
-        if(next%10===0) next += 5;
-        seq.push(next);
-    }
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
-}
-
-// ผสม 3 รูปแบบ (คูณ / บวก / ยกกำลังตำแหน่ง)
-function genHybrid(){
-    let a = rand(1,4);
-    let seq=[a];
-    for(let i=1;i<6;i++){
-        let next = seq[i-1]*2 + i;
-        if(i%3===0) next += i*i;
-        seq.push(next);
-    }
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
-}
-
-// อนุกรมซ่อนลำดับ (ใช้ตำแหน่งเป็นตัวกำหนด)
-function genIndexRule(){
-    let a = rand(5,15);
-    let seq=[a];
-    for(let i=1;i<6;i++){
-        let next = seq[i-1] + (i%2===0 ? i*2 : i+3);
-        seq.push(next);
-    }
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
-}
-
-// อนุกรมหลอก (ดูเหมือนเส้นตรงแต่ไม่ใช่)
-function genTrap(){
-    let a = rand(1,10);
-    let seq=[a];
-    let d = rand(2,4);
-    for(let i=1;i<6;i++){
-        d += (i%2===0)?1:2;
-        seq.push(seq[i-1] + d);
-    }
-    return {
-        seq, answer: seq[5],
-        explain: `แนวคิด: 1`
-            + `
-ขั้นที่ 1: เขียนความสัมพันธ์ระหว่างพจน์ติดกัน`
-            + `
-ขั้นที่ 2: ตรวจว่าค่าเพิ่ม / ตัวคูณ / ตำแหน่งพจน์ มีผลอย่างไร`
-            + `
-ขั้นที่ 3: ใช้กฎเดียวกันหาค่าพจน์ถัดไป`
-    };
-}
-
 
 function newQuestion(){
+    revealed=false;
+
     if(!timer){
-        timer = setInterval(()=>{
+        timer=setInterval(()=>{
             time++;
-            document.getElementById('time').innerText = time;
+            document.getElementById("time").innerText=time;
         },1000);
     }
-    document.getElementById('result').innerHTML='';
-    document.getElementById('answer').value='';
-    document.getElementById('explain').style.display='none';
 
-    let gens=[
-        genArithmetic,
-        genGeometric,
-        genAlternate,
-        genSquare,
-        genMulAdd,
-        genAltMulAdd,
-        genGrowingDiff,
-        genOddEven,
-        genSecondDiff,
-        genTwoRule,
-        genUnitDigit,
-        genHybrid,
-        genIndexRule,
-        genTrap
-    ];
+    document.getElementById("result").innerHTML="";
+    document.getElementById("answer").value="";
+    document.getElementById("explain").style.display="none";
+
+    let gens=[genArithmetic,genGeometric,genAlt];
     let q;
-    do{
-        q = gens[rand(0,gens.length-1)]();
-    }while(used.has(q.seq.join(',')));
-
-    used.add(q.seq.join(','));
+    do{q=gens[rand(0,gens.length-1)]();}while(used.has(q.seq.join(",")));
+    used.add(q.seq.join(","));
     current=q;
 
-    let html='';
+    let html="";
     for(let i=0;i<q.seq.length;i++){
-        if(i===q.seq.length-1) html+=`<span class="q">?</span>`;
-        else html+=`<span>${q.seq[i]}</span>`;
+        html+= i===5 ? `<span class="q">?</span>` : `<span>${q.seq[i]}</span>`;
     }
-    document.getElementById('sequence').innerHTML=html;
-    document.getElementById('explain').innerHTML=`<b>เฉลย:</b> ${q.answer}<br>${q.explain}<hr><b>วิธีคิดตัวอย่าง:</b><br>${generateMethod(q.seq)}`;
+    document.getElementById("sequence").innerHTML=html;
+    document.getElementById("explain").innerHTML=`<b>เฉลย:</b> ${q.ans}<br>${q.exp}`;
 }
 
 function checkAnswer(){
-    if(!current) return;
-    let val = Number(document.getElementById('answer').value);
-    let res = document.getElementById('result');
+    let v=Number(document.getElementById("answer").value);
+    let r=document.getElementById("result");
 
-    if(val===current.answer){
-        score += 10;
-        document.getElementById('score').innerText = score;
-        res.innerHTML='✅ ถูกต้อง! วิเคราะห์ได้ดีมาก';
-        res.className='result correct';
+    if(v===current.ans){
+        if(!revealed){
+            score+=10;
+            document.getElementById("score").innerText=score;
+            r.innerHTML="✅ ถูกต้อง! +10 คะแนน";
+        }else{
+            r.innerHTML="✅ ถูก แต่ไม่เพิ่มคะแนน (ดูเฉลยแล้ว)";
+        }
+        r.className="result correct";
     }else{
-        res.innerHTML='❌ ยังไม่ถูก ลองวิเคราะห์รูปแบบใหม่';
-        res.className='result wrong';
+        r.innerHTML="❌ ยังไม่ถูก";
+        r.className="result wrong";
     }
 }
 
 function toggleExplain(){
-    let ex = document.getElementById('explain');
-    ex.style.display = ex.style.display==='none'?'block':'none';
-}
-
-function generateMethod(seq){
-    let steps = [];
-    for(let i=1;i<seq.length;i++){
-        let diff = seq[i]-seq[i-1];
-        let ratio = seq[i-1]!==0 && seq[i]%seq[i-1]===0 ? seq[i]/seq[i-1] : null;
-        if(ratio && ratio!==1){
-            steps.push(`พจน์ที่ ${i} → ${i+1}: ×${ratio}`);
-        } else {
-            steps.push(`พจน์ที่ ${i} → ${i+1}: +${diff}`);
-        }
-    }
-    return steps.join('<br>');
+    document.getElementById("explain").style.display="block";
+    revealed=true;
 }
 
 newQuestion();
 </script>
+
 </body>
 </html>
